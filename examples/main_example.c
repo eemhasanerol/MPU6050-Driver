@@ -72,11 +72,11 @@ int main(void)
 
     /* MPU6050 handle */
     mpu6050_dev_t mpu = {
-        .dev_addr    = 0x68,   /* AD0 = GND */
+        .dev_addr    = MPU6050_WHO_AM_I_ID,   /* 0x68 - AD0 = GND */
         .accel_range = MPU6050_ACCEL_RANGE_2G,
         .gyro_range  = MPU6050_GYRO_RANGE_250DPS,
-        .dlpf_cfg    = MPU6050_DLPF_CFG_3,   /* ~44 Hz LPF *
-        .sample_rate = MPU6050_SMPLRT_100HZ,
+        .dlpf_cfg    = MPU6050_DLPF_CFG_3,  
+        .sample_rate = MPU6050_SMPLRT_1000HZ,   
         .i2c_read    = platform_i2c_read,
         .i2c_write   = platform_i2c_write
     };
@@ -92,15 +92,14 @@ int main(void)
     {
         if (mpu6050_read_all(&mpu, &mpu_data) == MPU6050_OK)
         {
-          printf("AX: %.2f  AY: %.2f  AZ: %.2f | "
+          /*ğ printf("AX: %.2f  AY: %.2f  AZ: %.2f | "
                    "GX: %.2f  GY: %.2f  GZ: %.2f | "
                    "Temp: %.2f\n",
                    mpu_data.ax, mpu_data.ay, mpu_data.az,
                    mpu_data.gx, mpu_data.gy, mpu_data.gz,
-                   mpu_data.temp);
+                   mpu_data.temp);*/
         }
 
         for (volatile int i = 0; i < 1000000; i++); /* ~1s delay */
     }
 }
-
