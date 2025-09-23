@@ -75,8 +75,8 @@ int main(void)
         .dev_addr    = 0x68,   /* AD0 = GND */
         .accel_range = MPU6050_ACCEL_RANGE_2G,
         .gyro_range  = MPU6050_GYRO_RANGE_250DPS,
-        .dlpf_cfg    = 0x03,   /* ~44 Hz LPF */
-        .sample_rate = 50,     /* Hz */
+        .dlpf_cfg    = MPU6050_DLPF_CFG_3,   /* ~44 Hz LPF *
+        .sample_rate = MPU6050_SMPLRT_100HZ,
         .i2c_read    = platform_i2c_read,
         .i2c_write   = platform_i2c_write
     };
@@ -103,3 +103,4 @@ int main(void)
         for (volatile int i = 0; i < 1000000; i++); /* ~1s delay */
     }
 }
+
