@@ -5,13 +5,13 @@
   * @brief   Public API for MPU6050 driver
   ******************************************************************************
   * @attention
-  * This header file provides:
+  * This file provides:
   *   - Data structures for device handle and sensor data
   *   - Status codes for driver functions
   *   - Function prototypes for initialization, configuration,
-  *     and reading sensor data
+  *     and reading accelerometer, gyroscope, and temperature data.
   *
-  * For detailed usage examples, please see README.md
+  * For usage examples, see README.md
   ******************************************************************************
   */
 
