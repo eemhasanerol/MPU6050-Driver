@@ -15,14 +15,15 @@
   ******************************************************************************
   */
 
-
 #ifndef MPU6050_INC_MPU6050_H_
 #define MPU6050_INC_MPU6050_H_
 
 #include <stdint.h>
 #include "mpu6050_defs.h"
 
-
+/* -------------------------------------------------------------------------- */
+/* Status codes                                                               */
+/* -------------------------------------------------------------------------- */
 /**
  * @brief Status codes for MPU6050 driver functions.
  *
@@ -30,13 +31,12 @@
  * to indicate success or type of error.
  */
 typedef enum {
-    MPU6050_OK      = 0,   /*!< Operation successful */
-    MPU6050_E_COMM  = -1,  /*!< Communication error (I2C/SPI) */
-    MPU6050_E_ID    = -2,  /*!< Wrong chip ID */
-    MPU6050_E_PARAM = -3,   /*!< Invalid parameter */
-	MPU6050_E_TIMEOUT = -4
+    MPU6050_OK        =  0,  /*!< Operation successful */
+    MPU6050_E_COMM    = -1,  /*!< Communication error (I2C/SPI) */
+    MPU6050_E_ID      = -2,  /*!< Wrong chip ID */
+    MPU6050_E_PARAM   = -3,  /*!< Invalid parameter */
+    MPU6050_E_TIMEOUT = -4   /*!< Operation timed out */
 } mpu6050_status_t;
-
 
 /* -------------------------------------------------------------------------- */
 /* Device handle                                                              */
@@ -45,26 +45,20 @@ typedef enum {
  * @brief MPU6050 device configuration and I2C hooks
  */
 typedef struct {
-    uint8_t  dev_addr;     /*!< I2C device address: 0x68 or 0x69 */
+    uint8_t  dev_addr;     /*!< I2C device address  @ref MPU6050_I2C_ADDR                    */
 
-    uint8_t  accel_range;  /*!< Accelerometer full-scale range.
-                                @ref MPU6050_ACCEL_RANGE_* */
+    uint8_t  accel_range;  /*!< Accelerometer full-scale range  @ref MPU6050_ACCEL_RANGE     */
 
-    uint8_t  gyro_range;   /*!< Gyroscope full-scale range.
-                                @ref MPU6050_GYRO_RANGE_* */
+    uint8_t  gyro_range;   /*!< Gyroscope full-scale range  @ref MPU6050_GYRO_RANGE          */
 
-    uint8_t  dlpf_cfg;     /*!< Digital Low Pass Filter setting (0–6).
-                                @ref MPU6050_DLPF_CFG_* */
+    uint8_t  dlpf_cfg;     /*!< Digital Low Pass Filter setting (0–6) @ref MPU6050_DLPF_CFG  */
 
-    uint16_t sample_rate;  /*!< Output sample rate in Hz.
-    						@defgroup MPU6050_SampleRate_* */
-
+    uint16_t sample_rate;  /*!< Output sample rate in Hz @ref MPU6050_SampleRate             */
 
     /* I2C callbacks */
     int32_t (*i2c_read)(uint8_t dev, uint8_t reg, uint8_t *buf, uint16_t len);
     int32_t (*i2c_write)(uint8_t dev, uint8_t reg, const uint8_t *buf, uint16_t len);
 } mpu6050_dev_t;
-
 
 /* -------------------------------------------------------------------------- */
 /* Data structure (raw + scaled values)                                       */
@@ -82,10 +76,10 @@ typedef struct {
     float temp_c;          /*!< Temperature in °C */
 } mpu6050_data_t;
 
-
 /* -------------------------------------------------------------------------- */
 /* API function prototypes                                                    */
 /* -------------------------------------------------------------------------- */
+
 /**
  * @brief Initialize the MPU6050 with provided configuration.
  * @param  dev Device handle
