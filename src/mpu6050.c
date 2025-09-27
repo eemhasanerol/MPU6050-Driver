@@ -2,10 +2,11 @@
   ******************************************************************************
   * @file    mpu6050.c
   * @author  Hasan Erol
-  * @brief   MPU6050 driver source file
+  * @brief   Source file for MPU6050 driver
   ******************************************************************************
   * @attention
-  * For usage examples, see README.md
+  * This file contains the implementation of initialization, configuration,
+  * and data readout functions for the MPU6050 accelerometer and gyroscope.
   ******************************************************************************
   */
 
@@ -294,5 +295,6 @@ mpu6050_status_t mpu6050_set_temp_enable(mpu6050_dev_t *dev, uint8_t enable)
 
     return MPU6050_OK;
 }
+
 
 
