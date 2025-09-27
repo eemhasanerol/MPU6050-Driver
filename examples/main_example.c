@@ -44,7 +44,7 @@ static void I2C1_InitPins(void)
     I2C_Pins.Otype      = GPIO_OTYPE_OD;
     I2C_Pins.PuPd       = GPIO_PULLUP;
     I2C_Pins.Speed      = GPIO_SPEED_HIGH;
-    I2C_Pins.Alternate  = 4; // AF4 = I2C1
+    I2C_Pins.Alternate  = GPIO_AF4_I2C1; // AF4 = I2C1
 
     GPIO_Init(GPIOB, &I2C_Pins);
 }
@@ -103,3 +103,4 @@ int main(void)
         for (volatile int i = 0; i < 1000000; i++); /* ~1s delay */
     }
 }
+
