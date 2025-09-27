@@ -1,9 +1,14 @@
-/*
- * mpu6050.c
- *
- *  Created on: Sep 9, 2025
- *      Author: erol-tesla
- */
+/**
+  ******************************************************************************
+  * @file    mpu6050.c
+  * @author  Erol Tesla
+  * @brief   MPU6050 driver source file
+  * @date    Sep 9, 2025
+  ******************************************************************************
+  * @attention
+  * For usage examples, see README.md
+  ******************************************************************************
+  */
 
 #include "mpu6050.h"
 
@@ -290,3 +295,4 @@ mpu6050_status_t mpu6050_set_temp_enable(mpu6050_dev_t *dev, uint8_t enable)
 
     return MPU6050_OK;
 }
+
