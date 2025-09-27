@@ -17,12 +17,6 @@
 /* -------- I2C handle -------- */
 static I2C_HandleTypeDef_t hi2c1;
 
-/* -------- Simple delay (blocking) -------- */
-static void platform_delay_ms(uint32_t ms)
-{
-    for (volatile uint32_t i = 0; i < (ms * 8000U); i++);
-}
-
 /* -------- I2C wrapper functions -------- */
 static int32_t platform_i2c_read(uint8_t dev, uint8_t reg, uint8_t *buf, uint16_t len)
 {
@@ -106,7 +100,7 @@ int main(void)
                    mpu_data.gyro_dps[0], mpu_data.gyro_dps[1], mpu_data.gyro_dps[2],
                    mpu_data.temp_c);
         }
-
-        platform_delay_ms(1000); /* 1s delay */
+        
     }
 }
+
