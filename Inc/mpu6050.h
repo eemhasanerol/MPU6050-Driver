@@ -1,9 +1,20 @@
-/*
- * mpu6050.h
- *
- *  Created on: Sep 9, 2025
- *      Author: erol-tesla
- */
+/**
+  ******************************************************************************
+  * @file    mpu6050.h
+  * @author  Hasan Erol
+  * @brief   Public API for MPU6050 driver
+  ******************************************************************************
+  * @attention
+  * This header file provides:
+  *   - Data structures for device handle and sensor data
+  *   - Status codes for driver functions
+  *   - Function prototypes for initialization, configuration,
+  *     and reading sensor data
+  *
+  * For detailed usage examples, please see README.md
+  ******************************************************************************
+  */
+
 
 #ifndef MPU6050_INC_MPU6050_H_
 #define MPU6050_INC_MPU6050_H_
