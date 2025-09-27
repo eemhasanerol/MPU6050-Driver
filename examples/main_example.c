@@ -5,6 +5,7 @@
  *
  * Tested on: STM32F407 (custom drivers for RCC, GPIO, I2C)
  */
+
 #include "stm32f407xx.h"
 #include "RCC.h"
 #include "GPIO.h"
@@ -15,6 +16,12 @@
 
 /* -------- I2C handle -------- */
 static I2C_HandleTypeDef_t hi2c1;
+
+/* -------- Simple delay (blocking) -------- */
+static void platform_delay_ms(uint32_t ms)
+{
+    for (volatile uint32_t i = 0; i < (ms * 8000U); i++);
+}
 
 /* -------- I2C wrapper functions -------- */
 static int32_t platform_i2c_read(uint8_t dev, uint8_t reg, uint8_t *buf, uint16_t len)
@@ -38,15 +45,14 @@ static void I2C1_InitPins(void)
 {
     RCC_GPIOB_CLK_ENABLE();
 
-    GPIO_InitTypeDef_t I2C_Pins = {0};4
-    
-    I2C_Pins.pinNumber  = (GPIO_PIN_6 | GPIO_PIN_7);  // PB6=SCL, PB7=SDA
+    GPIO_InitTypeDef_t I2C_Pins = {0};
+    I2C_Pins.pinNumber  = (GPIO_PIN_6 | GPIO_PIN_7);  // PB6 = SCL, PB7 = SDA
     I2C_Pins.Mode       = GPIO_MODE_AF;
     I2C_Pins.Otype      = GPIO_OTYPE_OD;
     I2C_Pins.PuPd       = GPIO_PULLUP;
     I2C_Pins.Speed      = GPIO_SPEED_HIGH;
-    I2C_Pins.Alternate = GPIO_AF4_I2C1;
-    
+    I2C_Pins.Alternate  = GPIO_AF4_I2C1;  // AF4 = I2C1
+
     GPIO_Init(GPIOB, &I2C_Pins);
 }
 
@@ -73,11 +79,11 @@ int main(void)
 
     /* MPU6050 handle */
     mpu6050_dev_t mpu = {
-        .dev_addr    = MPU6050_WHO_AM_I_ID,   /* AD0 = GND */
+        .dev_addr    = MPU6050_I2C_ADDR_AD0_LOW,   /* 0x68 (AD0 = GND) */
         .accel_range = MPU6050_ACCEL_RANGE_2G,
         .gyro_range  = MPU6050_GYRO_RANGE_250DPS,
-        .dlpf_cfg    = MPU6050_DLPF_CFG_4,   /* ~44 Hz LPF */
-        .sample_rate = MPU6050_SMPLRT_20HZ,     /* Hz */
+        .dlpf_cfg    = MPU6050_DLPF_CFG_4,         /* ~44 Hz LPF */
+        .sample_rate = MPU6050_SMPLRT_20HZ,        /* 20 Hz */
         .i2c_read    = platform_i2c_read,
         .i2c_write   = platform_i2c_write
     };
@@ -93,14 +99,14 @@ int main(void)
     {
         if (mpu6050_read_all(&mpu, &mpu_data) == MPU6050_OK)
         {
-          printf("AX: %.2f  AY: %.2f  AZ: %.2f | "
-                   "GX: %.2f  GY: %.2f  GZ: %.2f | "
-                   "Temp: %.2f\n",
+            printf("AX: %.2f g  AY: %.2f g  AZ: %.2f g | "
+                   "GX: %.2f dps  GY: %.2f dps  GZ: %.2f dps | "
+                   "Temp: %.2f °C\r\n",
                    mpu_data.accel_g[0], mpu_data.accel_g[1], mpu_data.accel_g[2],
                    mpu_data.gyro_dps[0], mpu_data.gyro_dps[1], mpu_data.gyro_dps[2],
                    mpu_data.temp_c);
         }
 
-        for (volatile int i = 0; i < 1000000; i++); /* ~1s delay */
+        platform_delay_ms(1000); /* 1s delay */
     }
 }
