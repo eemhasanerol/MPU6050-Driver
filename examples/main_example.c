@@ -90,17 +90,19 @@ int main(void)
 
     while (1)
     {
-        if (mpu6050_read_all(&mpu, &mpu_data) == MPU6050_OK)
-        {
-          /*ğ printf("AX: %.2f  AY: %.2f  AZ: %.2f | "
-                   "GX: %.2f  GY: %.2f  GZ: %.2f | "
-                   "Temp: %.2f\n",
-                   mpu_data.ax, mpu_data.ay, mpu_data.az,
-                   mpu_data.gx, mpu_data.gy, mpu_data.gz,
-                   mpu_data.temp);*/
+        if (MPU6050_Read_All(&mpu, &data) == MPU6050_OK) {
+            printf("Accel[g]: X=%.2f Y=%.2f Z=%.2f | "
+                   "Gyro[dps]: X=%.2f Y=%.2f Z=%.2f | "
+                   "Temp: %.2f °C\r\n",
+                   data.accel_g[0], data.accel_g[1], data.accel_g[2],
+                   data.gyro_dps[0], data.gyro_dps[1], data.gyro_dps[2],
+                   data.temp_c);
         }
+
+
 
         for (volatile int i = 0; i < 1000000; i++); /* ~1s delay */
     }
 }
+
 
