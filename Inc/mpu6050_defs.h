@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    mpu6050_defs.h
   * @author  Hasan Erol
-  * @brief   Register definitions and configuration macros for MPU6050 IMU.
+  * @brief   Register definitions and configuration macros for MPU6050 IMU
   ******************************************************************************
   * @attention
   * Reference: InvenSense MPU6050 Register Map and Datasheet
@@ -11,6 +11,7 @@
   * options for the MPU6050 accelerometer and gyroscope.
   ******************************************************************************
   */
+
 
 
 #ifndef MPU6050_INC_MPU6050_DEFS_H_
