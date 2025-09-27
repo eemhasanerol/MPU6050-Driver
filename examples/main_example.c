@@ -38,14 +38,15 @@ static void I2C1_InitPins(void)
 {
     RCC_GPIOB_CLK_ENABLE();
 
-    GPIO_InitTypeDef_t I2C_Pins = {0};
+    GPIO_InitTypeDef_t I2C_Pins = {0};4
+    
     I2C_Pins.pinNumber  = (GPIO_PIN_6 | GPIO_PIN_7);  // PB6=SCL, PB7=SDA
     I2C_Pins.Mode       = GPIO_MODE_AF;
     I2C_Pins.Otype      = GPIO_OTYPE_OD;
     I2C_Pins.PuPd       = GPIO_PULLUP;
     I2C_Pins.Speed      = GPIO_SPEED_HIGH;
-    I2C_Pins.Alternate  = GPIO_AF4_I2C1; // AF4 = I2C1
-
+    I2C_Pins.Alternate = GPIO_AF4_I2C1;
+    
     GPIO_Init(GPIOB, &I2C_Pins);
 }
 
@@ -72,11 +73,11 @@ int main(void)
 
     /* MPU6050 handle */
     mpu6050_dev_t mpu = {
-        .dev_addr    = MPU6050_WHO_AM_I_ID,   /* 0x68 - AD0 = GND */
+        .dev_addr    = MPU6050_WHO_AM_I_ID,   /* AD0 = GND */
         .accel_range = MPU6050_ACCEL_RANGE_2G,
         .gyro_range  = MPU6050_GYRO_RANGE_250DPS,
-        .dlpf_cfg    = MPU6050_DLPF_CFG_3,  
-        .sample_rate = MPU6050_SMPLRT_1000HZ,   
+        .dlpf_cfg    = MPU6050_DLPF_CFG_4,   /* ~44 Hz LPF */
+        .sample_rate = MPU6050_SMPLRT_20HZ,     /* Hz */
         .i2c_read    = platform_i2c_read,
         .i2c_write   = platform_i2c_write
     };
@@ -90,19 +91,16 @@ int main(void)
 
     while (1)
     {
-        if (MPU6050_Read_All(&mpu, &data) == MPU6050_OK) {
-            printf("Accel[g]: X=%.2f Y=%.2f Z=%.2f | "
-                   "Gyro[dps]: X=%.2f Y=%.2f Z=%.2f | "
-                   "Temp: %.2f °C\r\n",
-                   data.accel_g[0], data.accel_g[1], data.accel_g[2],
-                   data.gyro_dps[0], data.gyro_dps[1], data.gyro_dps[2],
-                   data.temp_c);
+        if (mpu6050_read_all(&mpu, &mpu_data) == MPU6050_OK)
+        {
+          printf("AX: %.2f  AY: %.2f  AZ: %.2f | "
+                   "GX: %.2f  GY: %.2f  GZ: %.2f | "
+                   "Temp: %.2f\n",
+                   mpu_data.accel_g[0], mpu_data.accel_g[1], mpu_data.accel_g[2],
+                   mpu_data.gyro_dps[0], mpu_data.gyro_dps[1], mpu_data.gyro_dps[2],
+                   mpu_data.temp_c);
         }
-
-
 
         for (volatile int i = 0; i < 1000000; i++); /* ~1s delay */
     }
 }
-
-
