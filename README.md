@@ -21,6 +21,7 @@ Tested on STM32F407 with custom low-level drivers.
 
 ## Usage Example
 ```c
+// Platform-specific I²C read/write functions must be provided by the user
 #include "mpu6050.h"
 
 mpu6050_dev_t mpu = {
